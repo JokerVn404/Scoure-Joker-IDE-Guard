@@ -1,0 +1,91 @@
+# FAQ
+
+## AI IDEA GUARD có phải công cụ kết luận vi phạm không?
+
+Không.
+
+AI IDEA GUARD không kết luận ai đúng, ai sai, ai sao chép hoặc ai sở hữu ý tưởng.
+
+Hệ thống chỉ tạo **điểm phân tích độc lập** dựa trên dữ liệu người dùng cung cấp hoặc dữ liệu được ghi nhận trong quá trình scan.
+
+---
+
+## Điểm số Evidence Score là gì?
+
+Evidence Score là điểm tổng hợp từ các tín hiệu kỹ thuật có thể đo được, ví dụ:
+
+- mức độ tương đồng văn bản;
+- mức độ tương đồng cấu trúc;
+- trạng thái metadata;
+- trạng thái provenance marker;
+- timeline trước/sau;
+- hash;
+- lịch sử scan;
+- bản ghi project;
+- log phiên làm việc.
+
+Điểm số này là **chỉ báo kỹ thuật**, không phải kết luận pháp lý.
+
+---
+
+## Dữ liệu công khai là gì?
+
+Nếu người dùng bật chế độ Public Evidence Mode, hệ thống chỉ công khai dữ liệu tối thiểu:
+
+- Scan ID;
+- timestamp;
+- điểm số;
+- trạng thái marker;
+- trạng thái metadata;
+- hash;
+- report ID.
+
+Hệ thống không công khai nội dung gốc, prompt, source code hoặc tài liệu riêng tư nếu người dùng không cho phép.
+
+---
+
+## Vì sao cần bảng điểm công khai?
+
+Bảng điểm giúp các nền tảng, nhà phát hành hoặc bên kiểm tra có thêm dữ liệu tham chiếu để xem xét:
+
+- một ý tưởng xuất hiện khi nào;
+- scan nào được tạo trước;
+- marker có bị mất không;
+- metadata có thay đổi không;
+- mức độ tương đồng kỹ thuật ra sao.
+
+---
+
+## AI IDEA GUARD có tự động gửi report không?
+
+Không.
+
+Report chỉ được gửi khi người dùng chủ động xác nhận.
+
+---
+
+## AI IDEA GUARD có sửa source code của khách hàng không?
+
+Không.
+
+Hệ thống hoạt động theo nguyên tắc:
+
+- không sửa source;
+- không sửa build;
+- không sửa release;
+- không inject code;
+- không ảnh hưởng runtime.
+
+---
+
+## Điểm số có thể dùng làm gì?
+
+Điểm số có thể dùng để:
+
+- ưu tiên review;
+- lập hồ sơ bằng chứng;
+- hỗ trợ khiếu nại kỹ thuật;
+- hỗ trợ nền tảng đánh giá lại trường hợp;
+- theo dõi lịch sử phát triển dự án.
+
+Điểm số không thay thế quyết định của con người hoặc cơ quan có thẩm quyền.
