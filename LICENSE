@@ -1,0 +1,39 @@
+# Scoure - Proprietary License v0.1.0
+
+Copyright (c) 2024 JokerVn404. All rights reserved.
+
+---
+
+## License Grant
+
+This software is proprietary and confidential. Unauthorized use, copying, modification, distribution, or sublicensing is strictly prohibited.
+
+## Restrictions
+
+You may **NOT**:
+- Copy, modify, or create derivative works of this software.
+- Distribute, sell, lease, or share this software with others.
+- Reverse-engineer, decompile, or disassemble this software.
+- Use this software for any commercial purpose without written permission.
+- Remove or alter any proprietary notices, labels, or marks.
+
+## Permitted Use
+
+You may:
+- Use this software for **personal, non-commercial evaluation** during the private v1 MVP phase.
+- Report bugs and suggest improvements to the maintainer.
+- Participate in community testing and feedback (if invited).
+
+## Disclaimer
+
+THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+## Contact
+
+For licensing inquiries or permissions, contact:
+- **Email:** license@scoure.example.com
+- **GitHub:** https://github.com/JokerVn404/Scoure-Joker-IDE-Guard
+
+---
+
+**Status:** Proprietary (Private v1 MVP). Will be relicensed upon v1.0 public release.

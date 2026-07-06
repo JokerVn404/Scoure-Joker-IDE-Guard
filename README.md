@@ -1,468 +1,235 @@
-# Scoure-Joker-IDE-Guard
-Digital Provenance &amp; Evidence Platform  Version: 0.1.0 (Architecture 
-AI IDEA GUARD
+# Scoure - AI IDEA GUARD
 
-Digital Provenance & Evidence Platform
+**Digital Provenance & Evidence Platform** — Version: **0.1.0 (MVP)**
 
-Version: 0.1.0 (Architecture Draft)
+Scoure là nền tảng giúp quản lý nguồn gốc (provenance) và bằng chứng kỹ thuật của ý tưởng, tài liệu và mã nguồn khi làm việc với các công cụ AI. Hệ thống thu thập bằng chứng từ plugin local và Chrome extension, lưu trữ local-first (encrypted), và cho phép upload để phân tích khi người dùng đồng ý.
 
----
-
-Overview
-
-AI IDEA GUARD là nền tảng độc lập giúp người dùng quản lý nguồn gốc (provenance), lịch sử phát triển và bằng chứng kỹ thuật của ý tưởng, tài liệu và mã nguồn trong quá trình làm việc với các công cụ AI.
-
-Mục tiêu của dự án là cung cấp một hệ thống ghi nhận và so sánh bằng chứng nhằm hỗ trợ người dùng xác minh quá trình phát triển của dự án thông qua các dấu thời gian, hàm băm, nhật ký và báo cáo kỹ thuật.
-
-AI IDEA GUARD không tự động kết luận quyền sở hữu, hành vi sao chép hoặc vi phạm. Hệ thống chỉ thu thập và trình bày các bằng chứng kỹ thuật để phục vụ quá trình xem xét của con người.
+**v0.1.0 MVP focus:** Plugin local + Chrome extension + minimal API để test end-to-end capture → store → upload flow. Scoring logic và community board sẽ là v2.
 
 ---
 
-Vision
+## 🎯 Mục tiêu v1
 
-Xây dựng một nền tảng trung lập giúp:
-
-- Bảo tồn lịch sử hình thành ý tưởng.
-- Ghi nhận provenance của dự án.
-- Theo dõi quá trình phát triển.
-- So sánh các phiên bản tài liệu và mã nguồn.
-- Sinh báo cáo bằng chứng kỹ thuật.
-- Hỗ trợ người dùng lưu trữ hồ sơ phục vụ bảo vệ quyền sở hữu trí tuệ.
+- ✅ Plugin local: snapshot project files, compute hash, store encrypted locally.
+- ✅ Chrome extension: capture web/chat, store local, review + upload.
+- ✅ Consent & privacy: explicit opt-in, no background cloud logging, user controls data.
+- ✅ Native host: communicate between extension/plugin and optional sidecar agent.
+- ✅ Minimal API: ingest evidence, register plugin, store metadata.
+- ⏳ v2: scoring, comparator, public board, VS Code / Coder plugin.
 
 ---
 
-Core Principles
+## 🏗️ Kiến trúc v1 (tóm tắt)
 
-- Evidence First.
-- User Controlled.
-- Privacy by Default.
-- No Automatic Ownership Decision.
-- Read-only Analysis.
-- Zero Impact On Production Build.
+```
+Plugin Local (Node.js CLI)
+    ↓ (native messaging / stdio)
+Native Host (Node.js service)
+    ↓ (HTTP POST)
+Shared Core API (Express + Postgres + S3)
+    ↓
+Dashboard (minimal, JSON read)
 
----
+Chrome Extension (webview)
+    ↓ (native messaging / POST)
+Shared Core API
+    ↓
+Local Storage (encrypted, device-only)
+```
 
-Architecture
-
-AI IDEA GUARD gồm ba nhóm chức năng chính.
-
-1. Provenance Key Generator
-
-Sinh định danh cho mỗi dự án hoặc phiên làm việc.
-
-Bao gồm:
-
-- Project ID
-- Session ID
-- Timestamp
-- SHA-256
-- Owner Metadata
-- Provenance Marker
-
-Mục đích:
-
-- Đánh dấu nguồn gốc dự án.
-- Hỗ trợ lưu trữ provenance.
-- Sinh Prompt hỗ trợ người dùng khi làm việc với AI.
+**Data flow:**
+1. User triggers capture (in plugin or extension).
+2. Capture stored locally encrypted (%LOCALAPPDATA%\Scoure or ~/.scoure).
+3. User reviews capture in UI.
+4. On upload approval: evidence POSTed to /v1/evidence with consent proof.
+5. API stores metadata + signs + returns receipt.
+6. Dashboard displays minimal info (metadata only, not content).
 
 ---
 
-2. Project Plugin (Optional)
+## 📋 Quick Start
 
-Plugin tùy chọn được cài đặt khi người dùng đồng ý.
+### Prerequisites
+- Node.js 16+ (for native host & backend).
+- npm / yarn.
+- Chrome/Edge browser (for extension).
+- (Optional) Postgres + MinIO/S3 for dev server.
 
-Chức năng:
+### Installation (Developer)
 
-- Ghi nhật ký phát triển.
-- Theo dõi thay đổi.
-- Tính Hash.
-- Ghi Timeline.
-- Sinh Audit Log.
+```bash
+# Clone repo
+git clone https://github.com/JokerVn404/Scoure-Joker-IDE-Guard.git
+cd Scoure-Joker-IDE-Guard
+git checkout feat/v1-complete
 
-Nguyên tắc:
+# Install dependencies (backend)
+cd server
+npm install
 
-- Không sửa mã nguồn.
-- Không sửa Build.
-- Không thêm Dependency.
-- Không ảnh hưởng Release.
-- Không thay đổi Runtime.
+# Install dependencies (native host)
+cd ../native-host
+npm install
 
-Plugin hoạt động như một Sidecar Project Logger.
+# Install dependencies (extension)
+cd ../extension
+npm install
+```
 
----
+### Run v1 end-to-end (dev mode)
 
-3. Evidence Scanner
+```bash
+# Terminal 1: Backend API
+cd server
+npm run dev
+# API listens on http://localhost:8080
 
-Cho phép người dùng phân tích:
+# Terminal 2: Native host (standalone)
+cd native-host
+npm start
+# Host listens on stdio or localhost:9000 (see config)
 
-- Source Code
-- Documentation
-- Prompt History
-- Chat History
-- Markdown
-- PDF
-- Export Data
+# Terminal 3: Load extension in Chrome
+# Open chrome://extensions -> Load unpacked -> select ./extension folder
+```
 
-Kết quả gồm:
+### First test: Capture & Upload
 
-- Similarity Score
-- Metadata Comparison
-- Timeline Analysis
-- Structure Comparison
-- Attribution Report
-- Evidence Report
+```bash
+# 1. Via native host CLI
+cd native-host
+npm run cli -- capture --path "/path/to/project" --consent-id "<uuid>"
 
----
+# 2. Via Chrome extension
+# - Open extension popup
+# - Select text or URL
+# - Click "Capture"
+# - Review in panel
+# - Click "Upload"
 
-Dashboard
-
-Dashboard HTML là giao diện quản trị chính.
-
-Các chức năng:
-
-- Project Manager
-- Provenance Key Generator
-- Session Manager
-- Timeline Viewer
-- Similarity Analyzer
-- Report Generator
-- Evidence Vault
-- Audit Viewer
-
----
-
-Chrome Extension
-
-Extension hỗ trợ:
-
-- Capture Prompt
-- Capture Response
-- Capture Selected Text
-- Session Marker
-- Local Evidence Logging
-
-Mọi chức năng đều yêu cầu người dùng chủ động bật.
+# 3. Check API
+curl http://localhost:8080/v1/evidence | jq
+```
 
 ---
 
-Project Sidecar
+## 🔒 Privacy & Consent (v1 critical)
 
-Khi được cài đặt vào dự án.
+**User-consent first:**
+- ✅ No auto-capture; only on explicit user action.
+- ✅ No 24/7 background cloud logging; local storage by default.
+- ✅ Consent record saved server-side (proof of user agreement).
+- ✅ User can delete local captures anytime.
 
-.idea-guard/
+**What is stored locally (encrypted AES-256):**
+- Captured content (text, screenshots, file snippets).
+- Metadata (path, URL, timestamp, hash).
+- Consent references.
 
-manifest.json
+**What is stored in cloud (minimal metadata only, if user consented):**
+- Project ID, session ID, first prompt hash.
+- Plugin ID, last-seen timestamp.
+- Content hash (no content itself).
+- Consent record (who, when, scope).
 
-session.db
+**User controls:**
+- Can review all local captures before upload.
+- Can delete local captures anytime (no cloud recovery).
+- Can revoke plugin/extension registration anytime.
 
-hash_chain.log
-
-reports/
-
-audit/
-
-cache/
-
-Không được đưa vào Release Build.
-
----
-
-Evidence Vault
-
-Lưu trữ:
-
-- SHA-256
-- Timestamp
-- Session
-- Project
-- Audit Record
-- Comparison Result
-- Report
-
-Có thể triển khai:
-
-- SQLite
-- MariaDB
-- PostgreSQL
+See **PRIVACY.md** for details.
 
 ---
 
-Backend
+## 📚 Documentation
 
-PHP API
-
-Các chức năng:
-
-- Authentication
-- Project
-- Session
-- Provenance
-- Report
-- Audit
-- Evidence
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** — system design, components, data model.
+- **[API.md](API.md)** — API endpoints, request/response examples.
+- **[SETUP.md](SETUP.md)** — dev environment, build, test.
+- **[USAGE.md](USAGE.md)** — user guide, step-by-step workflows.
+- **[PRIVACY.md](PRIVACY.md)** — privacy policy, consent model, retention.
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** — how to contribute.
+- **[BUILD.md](BUILD.md)** — build & test instructions.
 
 ---
 
-Similarity Engine
+## 🔧 Tech Stack (v1)
 
-Các module:
-
-- Lexical Parser
-- Structure Analyzer
-- Metadata Comparator
-- Timeline Analyzer
-- Similarity Engine
-- Attribution Analyzer
-
-Hệ thống chỉ đánh giá các tín hiệu kỹ thuật có thể quan sát được.
+- **Backend:** Node.js, Express, Postgres, S3-compatible storage.
+- **Native Host:** Node.js (stdio + JSON message protocol).
+- **Chrome Extension:** TypeScript, Webpack, Chrome Extension Manifest v3.
+- **Local Storage:** AES-256 encryption, OS Keychain (Windows DPAPI, macOS Keychain, Linux secret-service).
+- **Installer:** PowerShell scripts (Windows), shell scripts (macOS/Linux).
 
 ---
 
-Report Engine
+## 🚀 Deployment (v1 early)
 
-Sinh báo cáo:
+### For developers:
+- Clone, npm install, npm run dev (see SETUP.md).
+- Test locally with Chrome extension loaded unpacked.
 
-- HTML
-- PDF
-- JSON
-
-Bao gồm:
-
-- Timeline
-- Similarity
-- Hash
-- Metadata
-- Evidence
-- Reviewer Notes
+### For users (beta):
+- (Coming soon) Pre-built extension on Chrome Web Store (pending review).
+- (Coming soon) Native host downloadable from Releases.
+- Windows installer: PowerShell script (see installers/).
 
 ---
 
-Security
+## 📊 Roadmap
 
-Dự án tuân theo các nguyên tắc:
+### v0.1.0 (Current - MVP)
+- ✅ Plugin local (Node.js CLI).
+- ✅ Chrome extension (capture + local store + upload).
+- ✅ Minimal API (ingest, register, store).
+- ✅ Consent & privacy enforcement.
 
-- User Consent
-- Local First
-- Read-only Scan
-- Tamper-Evident Audit Log
-- Hash Chain Verification
+### v0.2.0 (Next)
+- Comparator logic (hash match, token diff).
+- Scoring policy.
+- Basic report generation (JSON).
+- Dashboard UI (minimal).
 
----
-
-Technology Stack
-
-Frontend
-
-- HTML5
-- CSS3
-- JavaScript
-- Tailwind CSS
-
-Extension
-
-- Chrome Extension Manifest V3
-
-Backend
-
-- PHP 8.x
-- REST API
-
-Database
-
-- MariaDB
-- SQLite
-
-Evidence
-
-- SHA-256
-- Timestamp
-- Digital Signature
+### v1.0.0 (Later)
+- ML-based similarity (embeddings).
+- Public board (redacted reports).
+- Community evaluation features.
+- VS Code extension.
+- Coder (code-server) plugin.
 
 ---
 
-Repository Structure
+## ❓ FAQ
 
-AI-IDEA-GUARD/
+**Q: Is my data safe?**  
+A: Local captures are encrypted on your device. We only store minimal metadata in cloud if you consent. See PRIVACY.md.
 
-dashboard/
+**Q: Will the plugin modify my code?**  
+A: No. Plugin is read-only. It only snapshots and hashes; never edits or injects.
 
-extension/
+**Q: Can I delete my data?**  
+A: Yes. Delete local captures anytime. Revoke plugin/extension anytime. See USAGE.md.
 
-plugin/
-
-scanner/
-
-vault/
-
-api/
-
-docs/
-
-reports/
-
-README.md
-
-LICENSE
-
-CHANGELOG.md
+**Q: What if Windows Defender flags the plugin?**  
+A: Plugin is unsigned (v1). See SETUP.md > "Antivirus" section for verification steps.
 
 ---
 
-Development Roadmap
+## 📞 Support & Community
 
-Phase 1
-
-- Dashboard
-- Provenance Key
-- Evidence Vault
-
-Phase 2
-
-- Chrome Extension
-- Project Plugin
-- Timeline
-
-Phase 3
-
-- Similarity Engine
-- Report Engine
-
-Phase 4
-
-- PHP API
-- Authentication
-- Cloud Sync (Optional)
+- **Issues:** [GitHub Issues](https://github.com/JokerVn404/Scoure-Joker-IDE-Guard/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/JokerVn404/Scoure-Joker-IDE-Guard/discussions)
+- **Security:** See SECURITY.md (coming soon).
 
 ---
 
-Design Goals
+## 📄 License
 
-- Không thay đổi source code của người dùng.
-- Không thay đổi build.
-- Không thay đổi release artifact.
-- Không tự động đưa ra kết luận pháp lý.
-- Chỉ ghi nhận, lưu trữ và trình bày bằng chứng kỹ thuật.
+Proprietary. See LICENSE and COPYING.md.
 
 ---
 
-License
+## Authors & Contributors
 
-Bản quyền, giấy phép và điều khoản sử dụng sẽ được xác định theo giấy phép do chủ sở hữu dự án lựa chọn.
-
-Copyright Notice
-
-AI IDEA GUARD
-
-Digital Provenance & Evidence Platform
-
----
-
-Copyright
-
-Copyright © JOKERVN404
-
-All rights reserved.
-
-Project Owner
-
-JOKERVN404
-
-Email
-
-jokervn404@gmail.com
-
-Website
-
-bothelper.vn
-
----
-
-Intellectual Property
-
-AI IDEA GUARD, including its architecture, documentation, software design, user interface concepts, provenance workflow, evidence collection workflow, similarity analysis model, project plugin architecture, dashboard design, database schema, API design, reporting workflow, and related documentation, is an original software project developed and maintained by JOKERVN404.
-
-This repository serves as the official development repository and technical documentation for the AI IDEA GUARD project.
-
----
-
-Project Purpose
-
-AI IDEA GUARD is designed to assist users in:
-
-- Preserving project provenance.
-- Recording development history.
-- Managing evidence records.
-- Comparing documents and source code.
-- Analyzing technical similarities.
-- Generating structured evidence reports.
-- Supporting intellectual property documentation and project traceability.
-
-The software provides technical evidence and analytical reports only. It does not automatically determine ownership, infringement, or legal liability.
-
----
-
-Design Principles
-
-- Evidence First
-- User Controlled
-- Privacy by Default
-- Read-only Analysis
-- Zero Impact on Customer Projects
-- Independent Evidence Collection
-- Transparent Reporting
-
----
-
-Ownership Statement
-
-Unless otherwise stated, all original project architecture, technical documentation, implementation concepts, repository organization, software specifications, workflow descriptions, and original source code contained within this repository are the intellectual property of JOKERVN404.
-
-Third-party libraries, frameworks, trademarks, and open-source components remain the property of their respective owners and are governed by their own licenses.
-
----
-
-Repository Metadata
-
-Project Name
-
-AI IDEA GUARD
-
-Owner
-
-JOKERVN404
-
-Contact
-
-jokervn404@gmail.com
-
-Official Website
-
-bothelper.vn
-
-Repository Type
-
-Software Project
-
-Current Status
-
-Architecture & Development
-
----
-
-Disclaimer
-
-AI IDEA GUARD is intended to assist users by collecting, organizing, preserving, and presenting technical evidence for human review.
-
-The software does not make legal determinations or automatically conclude ownership disputes.
-
-Users remain responsible for complying with applicable laws, software licenses, privacy requirements, and terms of service when using this software.
-
----
-
-© JOKERVN404
-
-Email: jokervn404@gmail.com
-
-Website: bothelper.vn
-
-All Rights Reserved.
+- **JokerVn404** — Project lead, architecture.
+- Contributors welcome (private phase).
