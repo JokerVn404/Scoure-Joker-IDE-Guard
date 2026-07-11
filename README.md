@@ -1,3 +1,4 @@
+1. ✅ README.md (TRANG CHÍNH)
 # Scoure Joker IDE Guard
 
 > AI-powered Code Provenance & Evidence Tracking System
@@ -32,3 +33,47 @@ Scoure Joker IDE Guard là hệ thống giúp:
 ---
 
 ## 🏗 Architecture
+
+
+User (IDE / Extension)
+↓
+Collector → Provenance Engine
+↓
+Similarity Engine → Evidence Engine
+↓
+API (PHP)
+↓
+Database
+↓
+Dashboard
+
+
+---
+
+## ⚙️ Tech Stack
+
+- Backend: PHP (REST API)
+- Database: MySQL
+- Extension: Chrome / IDE Plugin
+- AI: Code Similarity Engine
+
+---
+
+## 📦 Features
+
+- Code tracking theo thời gian
+- Snapshot & hash verification
+- AI similarity detection
+- Evidence export (PDF / JSON)
+
+---
+
+## 🤝 Contributing
+
+Xem `CONTRIBUTING.md`
+
+---
+
+## 📜 License
+
+MIT License
