@@ -1,4 +1,18 @@
-1. ✅ README.md (TRANG CHÍNH)
+AI IDEA GUARD
+
+DATABASE DESIGN SPECIFICATION
+
+Version 1.0
+
+Project: AI IDEA GUARD
+
+Document: 03-DATABASE-DESIGN.md
+
+Owner: JOKERVN404
+
+Email: jokervn404@gmail.com
+
+Website: bothelper.vn
 # Scoure Joker IDE Guard
 
 > AI-powered Code Provenance & Evidence Tracking System
