@@ -1,77 +1,34 @@
-# AI IDEA GUARD
+# Scoure Joker IDE Guard
 
-Digital Provenance & Evidence Platform
+> AI-powered Code Provenance & Evidence Tracking System
 
 ---
 
-## 🚀 Vision
+## 🚀 Overview
 
-AI IDEA GUARD là nền tảng giúp:
-
-- Ghi nhận nguồn gốc ý tưởng (Provenance)
-- Lưu lại toàn bộ quá trình phát triển
+Scoure Joker IDE Guard là hệ thống giúp:
+- Truy vết nguồn gốc code (Provenance)
+- Phát hiện copy / AI-generated code
 - Tạo bằng chứng kỹ thuật (Evidence)
-- So sánh và phân tích similarity
-- Sinh báo cáo phục vụ kiểm chứng
-
-⚠️ Hệ thống KHÔNG đưa ra kết luận pháp lý  
-→ Chỉ cung cấp dữ liệu để con người đánh giá
+- Bảo vệ bản quyền developer
 
 ---
 
-## ❗ Problem
+## 🎯 Problem
 
-Hiện nay:
-
-- Dev / Builder không thể chứng minh:
-  - Ai là người tạo ra trước
-  - Ý tưởng hình thành như thế nào
-- AI làm mọi thứ nhanh hơn → nhưng:
-  - Không có hệ thống lưu provenance
-  - Không có bằng chứng kỹ thuật rõ ràng
+- Code bị copy nhưng không có bằng chứng
+- AI code khó phân biệt nguồn gốc
+- Không có hệ thống audit timeline
 
 ---
 
 ## 💡 Solution
 
-AI IDEA GUARD cung cấp:
-
-### 1. Provenance Engine
-- Project ID
-- Session ID
-- Timestamp
-- SHA-256
-- Metadata tracking
-
-### 2. Evidence System
-- Audit Log
-- Timeline
-- Hash Chain
-- Evidence Vault
-
-### 3. Similarity Engine
-- Code comparison
-- Document comparison
-- Timeline analysis
-- Attribution report
-
-### 4. Report Engine
-- HTML / PDF / JSON
-- Technical evidence report
+- Provenance Engine → ghi lại lịch sử code
+- Evidence Engine → tạo bằng chứng pháp lý
+- Similarity Engine → phát hiện trùng lặp
+- Dashboard → visualize toàn bộ hệ thống
 
 ---
 
-## 🏗️ Architecture
-
-```text
-User
- ↓
-Extension / Plugin
- ↓
-Provenance + Logging
- ↓
-Evidence Vault
- ↓
-Similarity Engine
- ↓
-Report Engine
+## 🏗 Architecture
